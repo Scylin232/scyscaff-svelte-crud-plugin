@@ -1,0 +1,81 @@
+<script lang="ts">
+	import { goto, invalidateAll } from '$app/navigation';
+	import { page } from '$app/stores';
+
+	export let data;
+	export let editIndex;
+
+	$: query = new URLSearchParams($page.url.searchParams.toString());
+	$: currentPage = data.page;
+
+	const handleFormSubmit = async (event: SubmitEvent) => {
+		event.preventDefault();
+
+		editIndex = -1;
+
+		const form = event.target as HTMLFormElement;
+		const formData = Object.fromEntries(new FormData(form).entries());
+
+		const submitType: string = (event.submitter as HTMLInputElement).value;
+
+		if (submitType === 'Delete') {
+			await handleDelete(formData['edit_id']);
+			return;
+		}
+
+		const cleanFormData: Record<string, any> = {};
+
+		for (const key in formData) {
+			if (key.startsWith(submitType.toLowerCase())) {
+				const newKey = key.slice(submitType.length + 1);
+				cleanFormData[newKey] = formData[key];
+			}
+		}
+
+		if (submitType === 'Add')
+			await handleApiRequest('POST', cleanFormData);
+
+		if (submitType === 'Edit')
+			await handleApiRequest('PUT', cleanFormData, cleanFormData['id']);
+
+		await invalidateAll();
+	};
+
+	const handleDelete = async (id: string) => {
+		if (!id) return;
+
+		editIndex = -1;
+
+		await handleApiRequest('DELETE', null, id);
+
+		if (data.results?.length - 1 <= 0) {
+			query.set('page', (currentPage - 1).toString());
+			await goto(`?${query}`);
+		} else {
+			await invalidateAll();
+		}
+	};
+
+	const handleApiRequest = async (method: string, body: unknown, id?: string) => {
+		await fetch(`http://localhost:5001/api/Product${id ? `/${id}` : ''}`, {
+			method,
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: `Bearer ${$page.data.session?.access_token}`
+			},
+			body: JSON.stringify(body)
+		});
+	};
+</script>
+
+<div class="mt-4 flex flex-col">
+	<div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+		<div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+			<div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+				<form on:submit={handleFormSubmit}>
+					<slot />
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

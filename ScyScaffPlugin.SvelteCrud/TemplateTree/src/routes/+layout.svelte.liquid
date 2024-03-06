@@ -1,0 +1,12 @@
+<script>
+	import '../app.pcss';
+
+	import SidebarLayout from '../components/layouts/SidebarLayout.svelte';
+	import AuthGuard from '../components/guards/AuthGuard.svelte';
+</script>
+
+<AuthGuard>
+	<SidebarLayout>
+		<slot/>
+	</SidebarLayout>
+</AuthGuard>

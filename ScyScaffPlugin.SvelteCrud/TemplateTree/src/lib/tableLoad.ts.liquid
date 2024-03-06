@@ -1,0 +1,15 @@
+export async function tableLoad(fetch: (input: (URL | RequestInfo), init?: (RequestInit | undefined)) => Promise<Response>, url: URL) {
+	const page = Number(url.searchParams.get('page')) || 1;
+	const resultsPerPage = Math.min(Math.max(Number(url.searchParams.get('count')) || 10, 1), 100);
+
+	const sort = url.searchParams.get('sort') || 'createdAt';
+	const isAscending = url.searchParams.get('isAscending') || true;
+
+	const searchTerm = url.searchParams.get('searchTerm') || '';
+	const searchContent = url.searchParams.get('searchContent') || '';
+
+	const response = await fetch(`http://localhost:5001/api/Product?Page=${page}&Count=${resultsPerPage}&SortColumn=${sort}&IsAscending=${isAscending}&searchTerm=${searchTerm}&searchContent=${searchContent}`);
+	const json = await response.json();
+
+	return { results: json.results, totalPages: json.totalPages, page, resultsPerPage, searchTerm, searchContent };
+}

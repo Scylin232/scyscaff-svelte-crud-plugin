@@ -1,0 +1,11 @@
+export const getPaginationNumbers = (totalPages: number, currentPage: number): number[] => {
+	const pageSkip = 2;
+	const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
+
+	return pageNumbers.filter(
+		(pageNumber) =>
+			pageNumber === 1 ||
+			pageNumber === totalPages ||
+			(pageNumber >= currentPage - pageSkip && pageNumber <= currentPage + pageSkip)
+	);
+};

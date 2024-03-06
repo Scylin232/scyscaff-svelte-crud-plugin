@@ -1,0 +1,33 @@
+<script lang="ts">
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
+
+	export let data;
+
+	$: query = new URLSearchParams($page.url.searchParams.toString());
+
+	let searchTermInput = data.searchTerm;
+	let searchContentInput = data.searchContent;
+
+	const handleSearchChange = () => {
+		query.set('searchTerm', searchTermInput);
+		query.set('searchContent', searchContentInput);
+		query.set('page', '1');
+
+		goto(`?${query}`);
+	};
+</script>
+
+<div class="mt-4">
+	<input
+		class="w-1/6 p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-indigo-500 focus:border-indigo-500"
+		type="text" placeholder="Search Term..." bind:value={searchTermInput} />
+	<input
+		class="w-4/6 p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-indigo-500 focus:border-indigo-500"
+		type="text" placeholder="Search Content..." bind:value={searchContentInput} />
+	<button
+		type="button"
+		class="w-fit text-white end-2.5 bottom-2.5 bg-indigo-600 hover:bg-indigo-500 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-4 py-2"
+		on:click={handleSearchChange}>Search
+	</button>
+</div>

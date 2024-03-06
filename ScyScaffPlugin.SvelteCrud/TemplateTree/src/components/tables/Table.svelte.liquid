@@ -1,0 +1,37 @@
+<script lang="ts">
+	import TableSearch from '../../components/tables/TableSearch.svelte';
+	import TablePagination from '../../components/tables/TablePagination.svelte';
+	import TableForm from '../../components/tables/TableForm.svelte';
+	import TableColumns from '../../components/tables/TableColumns.svelte';
+	import TableAddForm from '../../components/tables/TableAddForm.svelte';
+	import TableRows from '../../components/tables/TableRows.svelte';
+	import TableHeader from '../../components/tables/TableHeader.svelte';
+
+	export let data: object;
+	export let model: object;
+	export let title: string;
+
+	let isAdding = false;
+	let editIndex = -1;
+</script>
+
+<div class="px-4 sm:px-6 lg:px-8">
+	<TableHeader title={title} bind:isAdding />
+
+	<TableSearch data={data} />
+
+	<TableForm data={data} bind:editIndex>
+		<table class="min-w-full divide-y divide-gray-300">
+			<thead class="bg-gray-50">
+			<TableColumns model={model} />
+			</thead>
+
+			<tbody class="divide-y divide-gray-200 bg-white">
+			<TableAddForm model={model} bind:isAdding />
+			<TableRows data={data} model={model} bind:editIndex />
+			</tbody>
+		</table>
+	</TableForm>
+
+	<TablePagination data={data} />
+</div>

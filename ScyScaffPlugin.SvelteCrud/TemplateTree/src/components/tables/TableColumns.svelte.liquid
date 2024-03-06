@@ -1,0 +1,39 @@
+<script lang="ts">
+	import { page } from '$app/stores';
+	import { goto } from '$app/navigation';
+
+	export let model;
+
+	$: query = new URLSearchParams($page.url.searchParams.toString());
+
+	const handleSortChange = (newSort: string) => {
+		if (query.get('sort') == newSort) {
+			handleAscendingChange();
+			return;
+		}
+
+		query.set('sort', newSort);
+		query.set('isAscending', 'false');
+
+		goto(`?${query}`);
+	};
+
+	const handleAscendingChange = () => {
+		query.set('isAscending', query.get('isAscending') !== 'true' ? 'true' : 'false');
+
+		goto(`?${query}`);
+	};
+</script>
+
+<tr>
+	{#each Object.keys(model) as modelKey}
+		<th scope="col"
+				class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 capitalize">
+			{modelKey}
+			<button on:click={() => handleSortChange(modelKey)} type="button">Sort</button>
+		</th>
+	{/each}
+	<th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
+		<span class="sr-only">Edit</span>
+	</th>
+</tr>
