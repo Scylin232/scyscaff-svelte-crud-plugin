@@ -1,0 +1,16 @@
+<script lang="ts">
+	import Table from '../../../components/tables/Table.svelte';
+
+	export let data;
+
+	const {{ model.key | string.downcase }}Model = {
+		id: 'protected',
+		createdAt: 'protected',
+		updatedAt: 'protected',
+    {{~ for field in model.value ~}}
+      {{ field.key | string.downcase }}: '',
+    {{~ end ~}}
+	};
+</script>
+
+<Table data={data} model={%{{}%}{{ model.key | string.downcase }}Model{%{}}%} title="{{ model.key }}" />

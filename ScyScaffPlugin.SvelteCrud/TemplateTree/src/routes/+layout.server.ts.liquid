@@ -1,7 +1,11 @@
 import type { LayoutServerLoad } from './$types';
+import { redirect } from '@sveltejs/kit';
 
 export const load: LayoutServerLoad = async (event) => {
-	return {
-		session: await event.locals.auth(),
-	}
-}
+	const session = await event.locals.auth();
+
+	if (!session || !session.is_admin)
+		redirect(301, '/auth/signin');
+
+	return { session };
+};

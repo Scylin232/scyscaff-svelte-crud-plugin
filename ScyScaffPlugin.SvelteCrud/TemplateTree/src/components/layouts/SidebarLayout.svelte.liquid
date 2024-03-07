@@ -11,10 +11,14 @@
 			title: "Home",
 			href: "/",
 		},
+		{{~ for service in config.services ~}}
+			{{~ for model in service.value.models ~}}
 		{
-			title: "Products",
-			href: "/tables/products",
+			title: "{{ model.key }}",
+			href: "/tables/{{ model.key | string.downcase }}"
 		},
+			{{~ end ~}}
+		{{~ end ~}}
 		{
 			title: "Sign Out",
 			href: "/auth/signout",
