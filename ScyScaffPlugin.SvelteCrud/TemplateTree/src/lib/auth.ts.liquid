@@ -1,10 +1,20 @@
-import { JWT_SECRET, REDIRECT_URL, AUTH0_ID, AUTH0_ISSUER, AUTH0_AUDIENCE, AUTH0_SECRET } from '$env/static/private';
+import { 
+	JWT_SECRET,
+	REDIRECT_URL,
+{{~ if config.auth == "auth0" ~}}
+	AUTH0_ID,
+	AUTH0_ISSUER,
+	AUTH0_AUDIENCE,
+	AUTH0_SECRET
+{{~ end ~}}
+} from '$env/static/private';
 import { SvelteKitAuth } from '@auth/sveltekit';
 import Auth0 from '@auth/sveltekit/providers/auth0';
 
 export const { handle, signIn, signOut } = SvelteKitAuth({
 	secret: JWT_SECRET,
 	redirectProxyUrl: REDIRECT_URL,
+	{{~ if config.auth == "auth0" ~}}
 	providers: [Auth0({
 		clientId: AUTH0_ID,
 		clientSecret: AUTH0_SECRET,
@@ -73,4 +83,5 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 			return session;
 		},
 	},
+	{{~ end ~}}
 });

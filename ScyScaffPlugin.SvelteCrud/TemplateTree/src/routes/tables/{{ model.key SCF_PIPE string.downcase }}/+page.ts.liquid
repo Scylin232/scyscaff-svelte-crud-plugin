@@ -1,5 +1,6 @@
+import { {{ model_entity_name | string.upcase }}_SERVICE_PORT } from '$env/static/private';
 import { tableLoad } from '$lib/tableLoad';
 
 export async function load({ fetch, url }) {
-	return await tableLoad(fetch, url);
+	return await tableLoad(fetch, url, "{{ model.key }}", {{ model_entity_name | string.upcase }}_SERVICE_PORT);
 }

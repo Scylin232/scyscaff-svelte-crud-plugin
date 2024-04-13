@@ -8,7 +8,7 @@
 		createdAt: 'protected',
 		updatedAt: 'protected',
     {{~ for field in model.value ~}}
-      {{ field.key | string.downcase }}: '',
+        {{ field.key | string.downcase }}: '',
     {{~ end ~}}
 	};
 </script>
