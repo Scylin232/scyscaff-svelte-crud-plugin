@@ -1,0 +1,11 @@
+FROM node:18-alpine AS {{ config.project_name | string.downcase }}-dashboard
+
+WORKDIR /app
+
+COPY . .
+
+RUN npm install
+
+EXPOSE 5353
+
+CMD ["npm", "run", "dev"]

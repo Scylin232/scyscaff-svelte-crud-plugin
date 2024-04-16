@@ -3,7 +3,9 @@
 	import { page } from '$app/stores';
 
 	export let data;
-	export let editIndex;
+	export let editIndex: number;
+	export let servicePort: number;
+	export let modelName: string;
 
 	$: query = new URLSearchParams($page.url.searchParams.toString());
 	$: currentPage = data.page;
@@ -57,7 +59,7 @@
 	};
 
 	const handleApiRequest = async (method: string, body: unknown, id?: string) => {
-		await fetch(`http://localhost:5001/api/Product${id ? `/${id}` : ''}`, {
+		await fetch(`http://localhost:${servicePort}/api/${modelName}${id ? `/${id}` : ''}`, {
 			method,
 			headers: {
 				'Content-type': 'application/json',
