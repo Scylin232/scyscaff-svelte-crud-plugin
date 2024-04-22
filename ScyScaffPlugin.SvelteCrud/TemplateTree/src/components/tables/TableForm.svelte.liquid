@@ -4,15 +4,11 @@
 
 	export let data;
 	export let editIndex: number;
-	export let servicePort: number;
-	export let modelName: string;
 
 	$: query = new URLSearchParams($page.url.searchParams.toString());
 	$: currentPage = data.page;
 
 	const handleFormSubmit = async (event: SubmitEvent) => {
-		event.preventDefault();
-
 		editIndex = -1;
 
 		const form = event.target as HTMLFormElement;
@@ -58,14 +54,12 @@
 		}
 	};
 
-	const handleApiRequest = async (method: string, body: unknown, id?: string) => {
-		await fetch(`http://localhost:${servicePort}/api/${modelName}${id ? `/${id}` : ''}`, {
-			method,
-			headers: {
-				'Content-type': 'application/json',
-				Authorization: `Bearer ${$page.data.session?.access_token}`
-			},
-			body: JSON.stringify(body)
+	const handleApiRequest = async (method: string, body: object | null, id?: string) => {
+		const pathname: string = new URL(window.location.href).pathname;
+
+		await fetch(pathname, {
+			method: "POST",
+			body: JSON.stringify({ method, id, params: body, access_token: $page.data.session?.access_token })
 		});
 	};
 </script>
@@ -74,7 +68,7 @@
 	<div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
 		<div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
 			<div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-				<form on:submit={handleFormSubmit}>
+				<form on:submit|preventDefault={handleFormSubmit}>
 					<slot />
 				</form>
 			</div>

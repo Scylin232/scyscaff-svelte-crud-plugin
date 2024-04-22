@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { PUBLIC_{{ model_entity_name | string.upcase }}_SERVICE_PORT } from '$env/static/public';
   import Table from '../../../components/tables/Table.svelte';
 
 	export let data;
@@ -14,4 +13,4 @@
 	};
 </script>
 
-<Table data={data} model={%{{}%}{{ model.key | string.downcase }}Model{%{}}%} modelName="{{ model.key }}" servicePort={%{{}%}PUBLIC_{{ model_entity_name | string.upcase }}_SERVICE_PORT{%{}}%} />
+<Table data={data} model={%{{}%}{{ model.key | string.downcase }}Model{%{}}%} title="{{ model.key }}" />

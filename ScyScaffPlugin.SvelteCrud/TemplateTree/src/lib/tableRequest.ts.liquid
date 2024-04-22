@@ -1,0 +1,19 @@
+﻿import type { RequestEvent } from '@sveltejs/kit';
+
+export async function tableRequest(event: RequestEvent, serviceName: string, servicePort: number, modelName: string) {
+    const { method, params, id, access_token }: {
+        method: string,
+        params: object,
+        id: string | null | undefined,
+        access_token: string
+    } = await event.request.json();
+
+    await fetch(`http://${serviceName}:${servicePort}/api/${modelName}${id ? `/${id}` : ''}`, {
+        method,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+        },
+        body: JSON.stringify(params)
+    });
+}

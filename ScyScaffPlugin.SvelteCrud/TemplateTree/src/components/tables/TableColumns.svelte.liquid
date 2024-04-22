@@ -27,11 +27,24 @@
 
 <tr>
 	{#each Object.keys(model) as modelKey}
-		<th scope="col"
-				class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 capitalize">
-			{modelKey}
-			<button on:click={() => handleSortChange(modelKey)} type="button">Sort</button>
-		</th>
+	<th scope="col"
+		class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 capitalize">
+		{modelKey}
+		<button on:click={() => handleSortChange(modelKey)} type="button">
+			<svg 
+				xmlns="http://www.w3.org/2000/svg"
+				class="ionicon"
+				viewBox="0 0 512 512" 
+				style={
+					`width: 16;height: 16;
+					${query.get('sort') !== modelKey ? "opacity: 25%;" : ""}
+					${query.get("sort") === modelKey && query.get("isAscending") === "true" ? "" : "transform: rotate(180deg);"}`
+				}
+			>
+				<path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M112 268l144 144 144-144M256 392V100"/>
+			</svg>
+		</button>
+	</th>
 	{/each}
 	<th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
 		<span class="sr-only">Edit</span>
