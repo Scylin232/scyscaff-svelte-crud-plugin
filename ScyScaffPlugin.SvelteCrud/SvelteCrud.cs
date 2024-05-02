@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using ScyScaff.Core.Models.Parser;
+﻿using ScyScaff.Core.Models.Parser;
 using ScyScaff.Core.Models.Plugins;
 using ScyScaff.Docker.Enums;
 using ScyScaff.Docker.Models.Builder;
@@ -13,7 +12,7 @@ public class SvelteCrud : IDashboardTemplatePlugin, IDockerCompatible
 
     public Dictionary<string, string[]> SupportedFlags { get; } = new();
 
-    public IEnumerable<DockerComposeService> GetComposeServices(string projectName, IScaffolderEntity? entity, string serviceName, int serviceIndex)
+    public IEnumerable<DockerComposeService> GetComposeServices(string projectName, IScaffolderEntity? entity, string entityName, int entityIndex)
     {
         List<DockerComposeService> dockerComposeServices = new()
         {

@@ -14,8 +14,8 @@
 		{{~ for service in config.services ~}}
 			{{~ for model in service.value.models ~}}
 		{
-			title: "{{ model.key }}",
-			href: "/tables/{{ model.key | string.downcase }}"
+			title: "{{ service.key }} - {{ model.key }}",
+			href: "/tables/{{ service.key | string.downcase }}-{{ model.key | string.downcase }}"
 		},
 			{{~ end ~}}
 		{{~ end ~}}

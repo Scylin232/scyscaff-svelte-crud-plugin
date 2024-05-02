@@ -1,6 +1,6 @@
 ﻿import type { RequestEvent } from '@sveltejs/kit';
 
-export async function tableRequest(event: RequestEvent, serviceName: string, servicePort: number, modelName: string) {
+export async function tableRequest(event: RequestEvent, requestUrl: string) {
     const { method, params, id, access_token }: {
         method: string,
         params: object,
@@ -8,7 +8,7 @@ export async function tableRequest(event: RequestEvent, serviceName: string, ser
         access_token: string
     } = await event.request.json();
 
-    await fetch(`http://${serviceName}:${servicePort}/api/${modelName}${id ? `/${id}` : ''}`, {
+    await fetch(`http://${requestUrl}${id ? `/${id}` : ''}`, {
         method,
         headers: {
             'Content-Type': 'application/json',

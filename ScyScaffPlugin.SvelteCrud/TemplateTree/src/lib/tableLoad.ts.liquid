@@ -1,4 +1,4 @@
-export async function tableLoad(fetch: (input: (URL | RequestInfo), init?: (RequestInit | undefined)) => Promise<Response>, url: URL, serviceName: string, servicePort: number, modelName: string) {
+export async function tableLoad(fetch: (input: (URL | RequestInfo), init?: (RequestInit | undefined)) => Promise<Response>, url: URL, requestUrl: string) {
 	const page = Number(url.searchParams.get('page')) || 1;
 	const resultsPerPage = Math.min(Math.max(Number(url.searchParams.get('count')) || 10, 1), 100);
 
@@ -8,7 +8,7 @@ export async function tableLoad(fetch: (input: (URL | RequestInfo), init?: (Requ
 	const searchTerm = url.searchParams.get('searchTerm') || '';
 	const searchContent = url.searchParams.get('searchContent') || '';
 
-	const response = await fetch(`http://${serviceName}:${servicePort}/api/${modelName}?Page=${page}&Count=${resultsPerPage}&SortColumn=${sort}&IsAscending=${isAscending}&searchTerm=${searchTerm}&searchContent=${searchContent}`);
+	const response = await fetch(`http://${requestUrl}?Page=${page}&Count=${resultsPerPage}&SortColumn=${sort}&IsAscending=${isAscending}&searchTerm=${searchTerm}&searchContent=${searchContent}`);
 	const json = await response.json();
 
 	return { results: json.results, totalPages: json.totalPages, page, resultsPerPage, searchTerm, searchContent };

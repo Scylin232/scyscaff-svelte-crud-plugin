@@ -1,0 +1,13 @@
+import { PRIVATE_{{ model_entity_name | string.upcase }}_SERVICE_PORT } from '$env/static/private';
+import { tableLoad } from '$lib/tableLoad';
+import { tableRequest } from '$lib/tableRequest';
+
+const requestUrl = `${{ model_entity_name | string.downcase }}-service:${PRIVATE_{{ model_entity_name | string.upcase }}_SERVICE_PORT}/api/{{ model.key }}`;
+
+export async function load({ fetch, url }) {
+	return await tableLoad(fetch, url, requestUrl);
+}
+
+export const actions = {
+	default: async (event) => await tableRequest(event, requestUrl),
+}
