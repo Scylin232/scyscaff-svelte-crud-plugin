@@ -1,0 +1,4 @@
+{
+	"PluginType": "DashboardPlugin",
+	"ExecutablePath": "./ScyScaffPlugin.SvelteCrud.dll"
+}
